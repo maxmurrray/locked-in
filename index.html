@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locked In — Compete to Stay Off Your Phone</title>
+    <title>Locked In — Don't Be Jake</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         
@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-        /* Hero */
+        /* ── Hero ── */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -24,19 +24,19 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 40px 24px;
+            padding: 60px 24px 40px;
             position: relative;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
+            top: -20%;
             left: 50%;
             transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
             pointer-events: none;
         }
 
@@ -44,18 +44,17 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 8px 18px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.25);
             border-radius: 100px;
-            font-size: 14px;
+            font-size: 13px;
             color: #818cf8;
             margin-bottom: 32px;
         }
 
         .badge .dot {
-            width: 8px;
-            height: 8px;
+            width: 7px; height: 7px;
             background: #818cf8;
             border-radius: 50%;
             animation: pulse 2s infinite;
@@ -63,15 +62,15 @@
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.3; }
         }
 
         h1 {
-            font-size: clamp(48px, 8vw, 80px);
+            font-size: clamp(44px, 8vw, 76px);
             font-weight: 900;
             line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 24px;
+            letter-spacing: -3px;
+            margin-bottom: 20px;
         }
 
         h1 .highlight {
@@ -80,451 +79,452 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            font-size: clamp(18px, 2.5vw, 22px);
-            color: #888;
-            max-width: 540px;
+        .tagline {
+            font-size: clamp(16px, 2.2vw, 20px);
+            color: #777;
+            max-width: 480px;
             line-height: 1.6;
             margin-bottom: 48px;
         }
 
-        .cta-group {
+        .cta-row {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
+            margin-bottom: 80px;
         }
 
-        .btn-primary {
+        .btn {
             padding: 16px 32px;
-            background: #818cf8;
-            color: #0a0a0a;
-            border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             text-decoration: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
         }
 
-        .btn-primary:hover {
-            background: #a5b4fc;
-            transform: translateY(-2px);
-        }
+        .btn-primary { background: #818cf8; color: #0a0a0a; }
+        .btn-primary:hover { background: #a5b4fc; transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: #ccc; border: 1px solid #2a2a2a; }
+        .btn-ghost:hover { border-color: #444; }
 
-        .btn-secondary {
-            padding: 16px 32px;
-            background: transparent;
-            color: #f5f5f5;
-            border: 1px solid #333;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .btn-secondary:hover {
-            border-color: #555;
-            background: rgba(255,255,255,0.05);
-        }
-
-        /* Phone mockup */
-        .phone-section {
-            padding: 80px 24px;
+        /* ── iPhone Mockup ── */
+        .phones-section {
             display: flex;
             justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 0 24px 100px;
         }
 
-        .phone {
-            width: 320px;
-            background: #151515;
-            border-radius: 40px;
+        .iphone {
+            width: 280px;
+            background: #1a1a1a;
+            border-radius: 44px;
+            padding: 14px;
             border: 2px solid #2a2a2a;
-            padding: 20px;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03) inset;
+            position: relative;
         }
 
-        .phone-screen {
+        .iphone-notch {
+            width: 120px;
+            height: 28px;
+            background: #1a1a1a;
+            border-radius: 0 0 18px 18px;
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .iphone-screen {
             background: #0a0a0a;
-            border-radius: 24px;
-            padding: 24px 20px;
-            min-height: 500px;
+            border-radius: 32px;
+            overflow: hidden;
+            min-height: 520px;
         }
 
-        .phone-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .phone-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .phone-header p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .leaderboard-item {
+        /* Status bar */
+        .status-bar {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: #151515;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            transition: all 0.2s;
-        }
-
-        .leaderboard-item.shame {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .rank {
-            font-size: 22px;
-            font-weight: 800;
-            width: 32px;
-            text-align: center;
-        }
-
-        .rank.gold { color: #fbbf24; }
-        .rank.silver { color: #94a3b8; }
-        .rank.bronze { color: #cd7f32; }
-        .rank.shame-rank { color: #ef4444; }
-
-        .player-info { flex: 1; }
-
-        .player-name {
-            font-size: 15px;
+            padding: 14px 24px 8px;
+            font-size: 13px;
             font-weight: 600;
         }
 
-        .player-streak {
-            font-size: 12px;
-            color: #666;
+        .status-bar .time { font-size: 15px; font-weight: 700; }
+        .status-icons { display: flex; gap: 5px; align-items: center; }
+        .status-icons span { font-size: 12px; }
+
+        /* App content inside phone */
+        .app-content {
+            padding: 8px 16px 20px;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .app-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .app-header p {
+            font-size: 11px;
+            color: #555;
             margin-top: 2px;
         }
 
-        .player-time {
-            font-size: 14px;
-            font-weight: 700;
-            color: #818cf8;
+        .app-tracking {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 8px;
         }
 
-        .shame-badge {
-            font-size: 11px;
-            background: rgba(239, 68, 68, 0.2);
+        .app-tag {
+            font-size: 10px;
+            background: rgba(99,102,241,0.1);
+            color: #818cf8;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        /* Leaderboard items */
+        .lb-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 14px;
+            background: #141414;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .lb-row.busted {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.12);
+        }
+
+        .lb-pos {
+            font-size: 20px;
+            font-weight: 900;
+            width: 28px;
+            text-align: center;
+        }
+
+        .lb-pos.gold { color: #fbbf24; }
+        .lb-pos.silver { color: #94a3b8; }
+        .lb-pos.bronze { color: #cd7f32; }
+
+        .lb-details { flex: 1; }
+        .lb-user { font-size: 14px; font-weight: 700; }
+        .lb-sub { font-size: 11px; color: #555; margin-top: 1px; }
+        .lb-val { font-size: 14px; font-weight: 700; color: #818cf8; }
+        .lb-bust {
+            font-size: 10px;
+            background: rgba(239,68,68,0.15);
             color: #ef4444;
             padding: 4px 10px;
             border-radius: 100px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        /* Notification mockup */
-        .notif-section {
-            padding: 40px 24px 80px;
-            display: flex;
-            justify-content: center;
-        }
+        /* ── Notification Phone ── */
+        .notif-content { padding: 16px; }
 
-        .notification {
-            max-width: 380px;
-            width: 100%;
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 16px 20px;
+        .notif-card {
+            background: rgba(30,30,30,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            border: 1px solid #2a2a2a;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .notif-icon {
-            width: 44px;
-            height: 44px;
-            background: rgba(99, 102, 241, 0.15);
-            border-radius: 12px;
+            width: 38px; height: 38px;
+            background: rgba(99,102,241,0.15);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 18px;
             flex-shrink: 0;
         }
 
-        .notif-text {
-            flex: 1;
+        .notif-body { flex: 1; }
+        .notif-app { font-size: 12px; font-weight: 700; color: #aaa; }
+        .notif-msg { font-size: 13px; color: #ddd; margin-top: 2px; line-height: 1.4; }
+        .notif-when { font-size: 10px; color: #555; }
+
+        .lock-screen-time {
+            text-align: center;
+            padding: 40px 0 20px;
         }
 
-        .notif-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 2px;
+        .lock-screen-time .big-time {
+            font-size: 64px;
+            font-weight: 200;
+            letter-spacing: -2px;
         }
 
-        .notif-body {
-            font-size: 13px;
+        .lock-screen-time .date {
+            font-size: 16px;
             color: #888;
+            font-weight: 500;
         }
 
-        .notif-time {
-            font-size: 11px;
-            color: #555;
-        }
-
-        /* How it works */
+        /* ── How Section ── */
         .how-section {
-            padding: 80px 24px;
+            padding: 100px 24px;
             max-width: 900px;
             margin: 0 auto;
         }
 
         .how-section h2 {
-            font-size: 36px;
-            font-weight: 800;
+            font-size: clamp(32px, 5vw, 44px);
+            font-weight: 900;
             text-align: center;
-            margin-bottom: 60px;
-            letter-spacing: -1px;
+            margin-bottom: 64px;
+            letter-spacing: -1.5px;
         }
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 36px;
         }
 
-        .step {
-            text-align: center;
-            padding: 32px 24px;
-        }
+        .step { text-align: center; padding: 24px 16px; }
 
         .step-num {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 900;
             background: linear-gradient(135deg, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .step h3 {
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 8px;
         }
 
         .step p {
             font-size: 14px;
-            color: #888;
+            color: #777;
             line-height: 1.6;
         }
 
-        /* CTA */
-        .cta-section {
-            padding: 80px 24px;
+        /* ── CTA Bottom ── */
+        .cta-bottom {
+            padding: 80px 24px 100px;
             text-align: center;
         }
 
-        .cta-section h2 {
-            font-size: clamp(32px, 5vw, 48px);
-            font-weight: 800;
+        .cta-bottom h2 {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 900;
             margin-bottom: 16px;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
         }
 
-        .cta-section p {
-            color: #888;
+        .cta-bottom p {
+            color: #666;
             font-size: 18px;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
         }
 
-        /* Email signup */
-        .signup-form {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            max-width: 460px;
-            margin: 0 auto;
-        }
-
-        .signup-form input {
-            flex: 1;
-            min-width: 240px;
-            padding: 16px 20px;
-            background: #151515;
-            border: 1px solid #333;
-            border-radius: 12px;
-            color: #f5f5f5;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-        }
-
-        .signup-form input:focus {
-            border-color: #818cf8;
-        }
-
-        .signup-form button {
-            padding: 16px 28px;
-            background: #818cf8;
-            color: #0a0a0a;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s;
-        }
-
-        .signup-form button:hover {
-            background: #a5b4fc;
-        }
-
-        /* Footer */
+        /* ── Footer ── */
         footer {
             padding: 40px 24px;
             text-align: center;
             font-size: 13px;
-            color: #444;
-            border-top: 1px solid #1a1a1a;
+            color: #333;
+            border-top: 1px solid #141414;
         }
 
-        footer a {
-            color: #666;
-            text-decoration: none;
+        footer a { color: #555; text-decoration: none; }
+        footer a:hover { color: #818cf8; }
+
+        /* ── Mobile ── */
+        @media (max-width: 640px) {
+            .phones-section { gap: 24px; }
+            .iphone { width: 260px; }
+            .iphone-screen { min-height: 480px; }
         }
     </style>
 </head>
 <body>
+
     <section class="hero">
         <div class="badge">
             <span class="dot"></span>
-            coming soon
+            now available
         </div>
-        <h1>Stay <span class="highlight">Locked In.</span></h1>
-        <p class="subtitle">Compete with your friends to stay off your phone. Last one to open Instagram wins. First one gets roasted.</p>
-        <div class="cta-group">
-            <a href="#signup" class="btn-primary">Get Early Access</a>
-            <a href="#how" class="btn-secondary">How It Works</a>
+        <h1>Don't Be <span class="highlight">Jake.</span></h1>
+        <p class="tagline">Compete with your friends to stay off your phone. Last one to open the app wins. First one gets exposed.</p>
+        <div class="cta-row">
+            <a href="#how" class="btn btn-primary">See How It Works</a>
         </div>
     </section>
 
-    <section class="phone-section">
-        <div class="phone">
-            <div class="phone-screen">
-                <div class="phone-header">
-                    <h3>🔒 The Squad</h3>
-                    <p>Tracking: Instagram, TikTok</p>
-                </div>
-                <div class="leaderboard-item">
-                    <span class="rank gold">1</span>
-                    <div class="player-info">
-                        <div class="player-name">Sarah</div>
-                        <div class="player-streak">🔥 5 day streak</div>
+    <!-- Two iPhones -->
+    <section class="phones-section">
+
+        <!-- Phone 1: Leaderboard -->
+        <div class="iphone">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <span>📶</span>
+                        <span>🔋</span>
                     </div>
-                    <span class="player-time">47h 23m</span>
                 </div>
-                <div class="leaderboard-item">
-                    <span class="rank silver">2</span>
-                    <div class="player-info">
-                        <div class="player-name">You</div>
-                        <div class="player-streak">🔥 3 day streak</div>
+                <div class="app-content">
+                    <div class="app-header">
+                        <h3>🔒 The Squad</h3>
+                        <div class="app-tracking">
+                            <span class="app-tag">Instagram</span>
+                            <span class="app-tag">TikTok</span>
+                        </div>
                     </div>
-                    <span class="player-time">31h 12m</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span class="rank bronze">3</span>
-                    <div class="player-info">
-                        <div class="player-name">Marcus</div>
-                        <div class="player-streak">12h streak</div>
+
+                    <div class="lb-row">
+                        <span class="lb-pos gold">1</span>
+                        <div class="lb-details">
+                            <div class="lb-user">Sarah</div>
+                            <div class="lb-sub">🔥 5 day streak</div>
+                        </div>
+                        <span class="lb-val">47h 23m</span>
                     </div>
-                    <span class="player-time">12h 05m</span>
-                </div>
-                <div class="leaderboard-item shame">
-                    <span class="rank shame-rank">💀</span>
-                    <div class="player-info">
-                        <div class="player-name">Jake</div>
-                        <div class="player-streak">Opened TikTok 4min ago</div>
+
+                    <div class="lb-row">
+                        <span class="lb-pos silver">2</span>
+                        <div class="lb-details">
+                            <div class="lb-user">You</div>
+                            <div class="lb-sub">🔥 3 day streak</div>
+                        </div>
+                        <span class="lb-val">31h 12m</span>
                     </div>
-                    <span class="shame-badge">BUSTED</span>
+
+                    <div class="lb-row">
+                        <span class="lb-pos bronze">3</span>
+                        <div class="lb-details">
+                            <div class="lb-user">Marcus</div>
+                            <div class="lb-sub">12h streak</div>
+                        </div>
+                        <span class="lb-val">12h 05m</span>
+                    </div>
+
+                    <div class="lb-row busted">
+                        <span class="lb-pos" style="font-size:18px;">💀</span>
+                        <div class="lb-details">
+                            <div class="lb-user">Jake</div>
+                            <div class="lb-sub">Opened TikTok 4min ago</div>
+                        </div>
+                        <span class="lb-bust">BUSTED</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <section class="notif-section">
-        <div class="notification">
-            <div class="notif-icon">🔓</div>
-            <div class="notif-text">
-                <div class="notif-title">Locked In</div>
-                <div class="notif-body">Jake just opened TikTok. You're now in 2nd place 🏆</div>
+        <!-- Phone 2: Notifications -->
+        <div class="iphone">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <span>📶</span>
+                        <span>🔋</span>
+                    </div>
+                </div>
+                <div class="lock-screen-time">
+                    <div class="date">Monday, February 24</div>
+                    <div class="big-time">9:41</div>
+                </div>
+                <div class="notif-content">
+                    <div class="notif-card">
+                        <div class="notif-icon">🔓</div>
+                        <div class="notif-body">
+                            <div class="notif-app">Locked In</div>
+                            <div class="notif-msg">Jake just opened TikTok. You moved up to <strong>2nd place</strong> 🏆</div>
+                        </div>
+                        <span class="notif-when">now</span>
+                    </div>
+                    <div class="notif-card">
+                        <div class="notif-icon">🔥</div>
+                        <div class="notif-body">
+                            <div class="notif-app">Locked In</div>
+                            <div class="notif-msg">3 day streak! You haven't opened Instagram in 72 hours.</div>
+                        </div>
+                        <span class="notif-when">2h</span>
+                    </div>
+                    <div class="notif-card">
+                        <div class="notif-icon">💀</div>
+                        <div class="notif-body">
+                            <div class="notif-app">Locked In</div>
+                            <div class="notif-msg">Marcus cracked. He opened Instagram at 2:34 AM.</div>
+                        </div>
+                        <span class="notif-when">7h</span>
+                    </div>
+                </div>
             </div>
-            <span class="notif-time">now</span>
         </div>
+
     </section>
 
+    <!-- How it works -->
     <section class="how-section" id="how">
         <h2>How it works</h2>
         <div class="steps">
             <div class="step">
                 <div class="step-num">01</div>
                 <h3>Pick your poison</h3>
-                <p>Choose which apps you want to stay off. Instagram, TikTok, Twitter — whatever's eating your time.</p>
+                <p>Choose which apps your group needs to stay off. Instagram, TikTok, Twitter — whatever's eating your time.</p>
             </div>
             <div class="step">
                 <div class="step-num">02</div>
                 <h3>Start a group</h3>
-                <p>Invite your friends. Set the rules. Everyone's on the clock the moment you start.</p>
+                <p>Invite your friends with a code. Everyone's on the clock the moment you start.</p>
             </div>
             <div class="step">
                 <div class="step-num">03</div>
                 <h3>Don't crack</h3>
-                <p>Last one to open the app wins. Open it and everyone gets a notification. There's no hiding.</p>
+                <p>Open a tracked app and everyone gets notified instantly. There's no hiding. Don't be Jake.</p>
             </div>
         </div>
     </section>
 
-    <section class="cta-section" id="signup">
+    <!-- Bottom CTA -->
+    <section class="cta-bottom">
         <h2>Don't be Jake.</h2>
-        <p>Get early access when we launch.</p>
-        <form class="signup-form" onsubmit="handleSignup(event)">
-            <input type="email" placeholder="your@email.com" required>
-            <button type="submit">I'm In</button>
-        </form>
-        <p id="signup-msg" style="margin-top: 16px; font-size: 14px; color: #818cf8; display: none;"></p>
+        <p>Your friends are watching.</p>
+        <a href="/app" class="btn btn-primary">Try Locked In</a>
     </section>
 
     <footer>
         <p>Built by <a href="https://x.com/lebrawnbot" target="_blank">@lebrawnbot</a> 🏀</p>
     </footer>
 
-    <script>
-        function handleSignup(e) {
-            e.preventDefault();
-            const email = e.target.querySelector('input').value;
-            // Store in localStorage for now, replace with real backend later
-            const emails = JSON.parse(localStorage.getItem('lockedin_emails') || '[]');
-            emails.push({ email, date: new Date().toISOString() });
-            localStorage.setItem('lockedin_emails', JSON.stringify(emails));
-            
-            e.target.querySelector('input').value = '';
-            const msg = document.getElementById('signup-msg');
-            msg.textContent = "you're locked in. we'll hit you up when it's ready. 🔒";
-            msg.style.display = 'block';
-        }
-    </script>
 </body>
 </html>
