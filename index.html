@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locked In — Compete to Stay Off Your Phone</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 24px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            color: #818cf8;
+            margin-bottom: 32px;
+        }
+
+        .badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #818cf8;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: clamp(18px, 2.5vw, 22px);
+            color: #888;
+            max-width: 540px;
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            padding: 16px 32px;
+            background: #818cf8;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: #a5b4fc;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 16px 32px;
+            background: transparent;
+            color: #f5f5f5;
+            border: 1px solid #333;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: #555;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Phone mockup */
+        .phone-section {
+            padding: 80px 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone {
+            width: 320px;
+            background: #151515;
+            border-radius: 40px;
+            border: 2px solid #2a2a2a;
+            padding: 20px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            background: #0a0a0a;
+            border-radius: 24px;
+            padding: 24px 20px;
+            min-height: 500px;
+        }
+
+        .phone-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .phone-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .phone-header p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: #151515;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .leaderboard-item.shame {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .rank {
+            font-size: 22px;
+            font-weight: 800;
+            width: 32px;
+            text-align: center;
+        }
+
+        .rank.gold { color: #fbbf24; }
+        .rank.silver { color: #94a3b8; }
+        .rank.bronze { color: #cd7f32; }
+        .rank.shame-rank { color: #ef4444; }
+
+        .player-info { flex: 1; }
+
+        .player-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .player-streak {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .player-time {
+            font-size: 14px;
+            font-weight: 700;
+            color: #818cf8;
+        }
+
+        .shame-badge {
+            font-size: 11px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        /* Notification mockup */
+        .notif-section {
+            padding: 40px 24px 80px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .notification {
+            max-width: 380px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid #2a2a2a;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notif-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .notif-text {
+            flex: 1;
+        }
+
+        .notif-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .notif-body {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* How it works */
+        .how-section {
+            padding: 80px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .how-section h2 {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .step-num {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            color: #888;
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        /* Email signup */
+        .signup-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        .signup-form input {
+            flex: 1;
+            min-width: 240px;
+            padding: 16px 20px;
+            background: #151515;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #f5f5f5;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .signup-form input:focus {
+            border-color: #818cf8;
+        }
+
+        .signup-form button {
+            padding: 16px 28px;
+            background: #818cf8;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .signup-form button:hover {
+            background: #a5b4fc;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #444;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        footer a {
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="badge">
+            <span class="dot"></span>
+            coming soon
+        </div>
+        <h1>Stay <span class="highlight">Locked In.</span></h1>
+        <p class="subtitle">Compete with your friends to stay off your phone. Last one to open Instagram wins. First one gets roasted.</p>
+        <div class="cta-group">
+            <a href="#signup" class="btn-primary">Get Early Access</a>
+            <a href="#how" class="btn-secondary">How It Works</a>
+        </div>
+    </section>
+
+    <section class="phone-section">
+        <div class="phone">
+            <div class="phone-screen">
+                <div class="phone-header">
+                    <h3>🔒 The Squad</h3>
+                    <p>Tracking: Instagram, TikTok</p>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="rank gold">1</span>
+                    <div class="player-info">
+                        <div class="player-name">Sarah</div>
+                        <div class="player-streak">🔥 5 day streak</div>
+                    </div>
+                    <span class="player-time">47h 23m</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="rank silver">2</span>
+                    <div class="player-info">
+                        <div class="player-name">You</div>
+                        <div class="player-streak">🔥 3 day streak</div>
+                    </div>
+                    <span class="player-time">31h 12m</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="rank bronze">3</span>
+                    <div class="player-info">
+                        <div class="player-name">Marcus</div>
+                        <div class="player-streak">12h streak</div>
+                    </div>
+                    <span class="player-time">12h 05m</span>
+                </div>
+                <div class="leaderboard-item shame">
+                    <span class="rank shame-rank">💀</span>
+                    <div class="player-info">
+                        <div class="player-name">Jake</div>
+                        <div class="player-streak">Opened TikTok 4min ago</div>
+                    </div>
+                    <span class="shame-badge">BUSTED</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="notif-section">
+        <div class="notification">
+            <div class="notif-icon">🔓</div>
+            <div class="notif-text">
+                <div class="notif-title">Locked In</div>
+                <div class="notif-body">Jake just opened TikTok. You're now in 2nd place 🏆</div>
+            </div>
+            <span class="notif-time">now</span>
+        </div>
+    </section>
+
+    <section class="how-section" id="how">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Pick your poison</h3>
+                <p>Choose which apps you want to stay off. Instagram, TikTok, Twitter — whatever's eating your time.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Start a group</h3>
+                <p>Invite your friends. Set the rules. Everyone's on the clock the moment you start.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Don't crack</h3>
+                <p>Last one to open the app wins. Open it and everyone gets a notification. There's no hiding.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="signup">
+        <h2>Don't be Jake.</h2>
+        <p>Get early access when we launch.</p>
+        <form class="signup-form" onsubmit="handleSignup(event)">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">I'm In</button>
+        </form>
+        <p id="signup-msg" style="margin-top: 16px; font-size: 14px; color: #818cf8; display: none;"></p>
+    </section>
+
+    <footer>
+        <p>Built by <a href="https://x.com/lebrawnbot" target="_blank">@lebrawnbot</a> 🏀</p>
+    </footer>
+
+    <script>
+        function handleSignup(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            // Store in localStorage for now, replace with real backend later
+            const emails = JSON.parse(localStorage.getItem('lockedin_emails') || '[]');
+            emails.push({ email, date: new Date().toISOString() });
+            localStorage.setItem('lockedin_emails', JSON.stringify(emails));
+            
+            e.target.querySelector('input').value = '';
+            const msg = document.getElementById('signup-msg');
+            msg.textContent = "you're locked in. we'll hit you up when it's ready. 🔒";
+            msg.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
