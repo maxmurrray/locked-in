@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locked In 🔒</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+        .container { max-width: 420px; margin: 0 auto; padding: 24px 20px; }
+        
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 0; margin-bottom: 24px;
+        }
+        .logo { font-size: 20px; font-weight: 800; }
+        .logo span { color: #818cf8; }
+        .user-badge {
+            font-size: 13px; color: #888; background: #151515;
+            padding: 6px 14px; border-radius: 100px;
+        }
+        
+        /* Screens */
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
+        /* Auth screen */
+        .auth-title {
+            font-size: 32px; font-weight: 900; text-align: center;
+            margin: 60px 0 8px; letter-spacing: -1px;
+        }
+        .auth-sub {
+            text-align: center; color: #666; font-size: 15px; margin-bottom: 40px;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%; padding: 16px 18px; background: #151515;
+            border: 1px solid #2a2a2a; border-radius: 12px; color: #f5f5f5;
+            font-size: 16px; font-family: 'Inter', sans-serif; outline: none;
+            margin-bottom: 12px;
+        }
+        input:focus { border-color: #818cf8; }
+        .btn {
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-main { background: #818cf8; color: #0a0a0a; }
+        .btn-main:hover { background: #a5b4fc; }
+        .btn-outline {
+            background: transparent; color: #f5f5f5;
+            border: 1px solid #333; margin-top: 10px;
+        }
+        .btn-outline:hover { border-color: #555; background: rgba(255,255,255,0.03); }
+        .btn-sm {
+            width: auto; padding: 10px 20px; font-size: 14px; border-radius: 10px;
+        }
+        .btn-danger { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        
+        /* Dashboard */
+        .section-title {
+            font-size: 14px; font-weight: 700; color: #555;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .group-card {
+            background: #151515; border-radius: 16px; padding: 20px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
+            border: 1px solid #1e1e1e;
+        }
+        .group-card:hover { border-color: #333; transform: translateY(-2px); }
+        .group-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .group-meta { font-size: 13px; color: #666; }
+        .group-meta span { color: #818cf8; }
+        
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: #444;
+        }
+        .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+        .empty-state p { font-size: 15px; line-height: 1.6; }
+        
+        .actions { display: flex; gap: 10px; margin-bottom: 32px; }
+        .actions .btn { flex: 1; }
+        
+        /* Leaderboard */
+        .lb-header {
+            text-align: center; margin-bottom: 24px;
+        }
+        .lb-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+        .lb-header p { font-size: 13px; color: #666; }
+        .lb-sites {
+            display: flex; gap: 8px; justify-content: center;
+            flex-wrap: wrap; margin-top: 10px;
+        }
+        .lb-site {
+            font-size: 12px; background: rgba(99,102,241,0.1);
+            color: #818cf8; padding: 4px 12px; border-radius: 100px;
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+        .invite-code {
+            text-align: center; margin: 16px 0;
+            font-size: 13px; color: #555;
+        }
+        .invite-code strong {
+            color: #818cf8; font-size: 16px; letter-spacing: 2px;
+            cursor: pointer;
+        }
+        
+        .lb-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 16px; background: #151515; border-radius: 14px;
+            margin-bottom: 10px;
+        }
+        .lb-item.busted {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+        .lb-rank {
+            font-size: 24px; font-weight: 900; width: 36px; text-align: center;
+        }
+        .lb-rank.r1 { color: #fbbf24; }
+        .lb-rank.r2 { color: #94a3b8; }
+        .lb-rank.r3 { color: #cd7f32; }
+        .lb-rank.dead { color: #ef4444; }
+        .lb-info { flex: 1; }
+        .lb-name { font-size: 16px; font-weight: 700; }
+        .lb-streak { font-size: 12px; color: #666; margin-top: 2px; }
+        .lb-time { font-size: 15px; font-weight: 700; color: #818cf8; }
+        .lb-busted {
+            font-size: 11px; background: rgba(239,68,68,0.2); color: #ef4444;
+            padding: 4px 12px; border-radius: 100px; font-weight: 700;
+        }
+        
+        .back-btn {
+            background: none; border: none; color: #666; font-size: 14px;
+            cursor: pointer; font-family: 'Inter', sans-serif; padding: 8px 0;
+            margin-bottom: 16px;
+        }
+        .back-btn:hover { color: #f5f5f5; }
+        
+        /* Create group */
+        label {
+            display: block; font-size: 13px; font-weight: 600;
+            color: #888; margin-bottom: 8px; margin-top: 20px;
+        }
+        .site-chips {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+        }
+        .chip {
+            padding: 10px 18px; background: #151515; border: 1px solid #2a2a2a;
+            border-radius: 100px; font-size: 14px; cursor: pointer;
+            transition: all 0.15s; user-select: none;
+        }
+        .chip:hover { border-color: #444; }
+        .chip.selected { background: rgba(99,102,241,0.15); border-color: #818cf8; color: #818cf8; }
+        
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; border: 1px solid #333; border-radius: 14px;
+            padding: 14px 24px; font-size: 14px; display: none;
+            z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .toast.show { display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🔒 Locked <span>In</span></div>
+            <div class="user-badge" id="userBadge" style="display:none"></div>
+        </div>
+
+        <!-- Auth Screen -->
+        <div class="screen active" id="authScreen">
+            <div class="auth-title">🔒</div>
+            <p class="auth-sub">compete with friends to stay off your phone</p>
+            <input type="text" id="usernameInput" placeholder="pick a username" maxlength="20" autocomplete="off">
+            <button class="btn btn-main" onclick="register()">Let's Go</button>
+            <button class="btn btn-outline" onclick="login()">I Already Have One</button>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="screen" id="dashScreen">
+            <div class="actions">
+                <button class="btn btn-main btn-sm" onclick="showCreate()">+ New Group</button>
+                <button class="btn btn-outline btn-sm" onclick="showJoin()">Join Group</button>
+            </div>
+            <div class="section-title">Your Groups</div>
+            <div id="groupList"></div>
+        </div>
+
+        <!-- Create Group -->
+        <div class="screen" id="createScreen">
+            <button class="back-btn" onclick="showDash()">← Back</button>
+            <h2 style="font-size:24px;font-weight:800;margin-bottom:4px;">New Group</h2>
+            <p style="font-size:14px;color:#666;margin-bottom:8px;">pick the apps your squad needs to stay off</p>
+            <label>Group Name</label>
+            <input type="text" id="groupNameInput" placeholder="The Squad" maxlength="30">
+            <label>Track These Sites</label>
+            <div class="site-chips" id="siteChips">
+                <div class="chip" data-site="instagram.com" onclick="toggleChip(this)">📸 Instagram</div>
+                <div class="chip" data-site="tiktok.com" onclick="toggleChip(this)">🎵 TikTok</div>
+                <div class="chip" data-site="twitter.com" onclick="toggleChip(this)">𝕏 Twitter</div>
+                <div class="chip" data-site="reddit.com" onclick="toggleChip(this)">🟠 Reddit</div>
+                <div class="chip" data-site="youtube.com" onclick="toggleChip(this)">▶️ YouTube</div>
+                <div class="chip" data-site="facebook.com" onclick="toggleChip(this)">👤 Facebook</div>
+                <div class="chip" data-site="snapchat.com" onclick="toggleChip(this)">👻 Snapchat</div>
+                <div class="chip" data-site="twitch.tv" onclick="toggleChip(this)">🟣 Twitch</div>
+            </div>
+            <button class="btn btn-main" style="margin-top:28px;" onclick="createGroup()">Create Group 🔒</button>
+        </div>
+
+        <!-- Join Group -->
+        <div class="screen" id="joinScreen">
+            <button class="back-btn" onclick="showDash()">← Back</button>
+            <h2 style="font-size:24px;font-weight:800;margin-bottom:16px;">Join a Group</h2>
+            <input type="text" id="inviteCodeInput" placeholder="Enter invite code" maxlength="6" style="text-transform:uppercase;letter-spacing:3px;text-align:center;font-size:20px;font-weight:700;">
+            <button class="btn btn-main" style="margin-top:12px;" onclick="joinGroup()">Join</button>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="screen" id="lbScreen">
+            <button class="back-btn" onclick="showDash()">← Back</button>
+            <div class="lb-header">
+                <h2 id="lbGroupName"></h2>
+                <div class="invite-code">invite: <strong id="lbInviteCode" onclick="copyCode()"></strong></div>
+                <div class="lb-sites" id="lbSites"></div>
+            </div>
+            <div id="lbList"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const API = '';
+        let user = JSON.parse(localStorage.getItem('lockedin_user') || 'null');
+        let currentGroup = null;
+        let socket;
+
+        // ── Init ──
+        if (user) {
+            document.getElementById('userBadge').textContent = '@' + user.username;
+            document.getElementById('userBadge').style.display = 'block';
+            showDash();
+        }
+
+        function initSocket() {
+            socket = io();
+            socket.on('violation', (data) => {
+                toast(`💀 ${data.username} just opened ${data.domain}!`);
+                if (currentGroup === data.groupId) loadLeaderboard(data.groupId);
+            });
+        }
+
+        // ── Auth ──
+        async function register() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) return;
+            const res = await fetch(API + '/api/register', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ username })
+            });
+            const data = await res.json();
+            if (data.error) return toast('❌ ' + data.error);
+            user = data;
+            localStorage.setItem('lockedin_user', JSON.stringify(user));
+            document.getElementById('userBadge').textContent = '@' + user.username;
+            document.getElementById('userBadge').style.display = 'block';
+            showDash();
+            initSocket();
+        }
+
+        async function login() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) return;
+            const res = await fetch(API + '/api/login', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ username })
+            });
+            const data = await res.json();
+            if (data.error) return toast('❌ ' + data.error);
+            user = data;
+            localStorage.setItem('lockedin_user', JSON.stringify(user));
+            document.getElementById('userBadge').textContent = '@' + user.username;
+            document.getElementById('userBadge').style.display = 'block';
+            showDash();
+            initSocket();
+        }
+
+        // ── Navigation ──
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        async function showDash() {
+            showScreen('dashScreen');
+            const res = await fetch(API + '/api/groups/' + user.id);
+            const groups = await res.json();
+            const list = document.getElementById('groupList');
+            if (groups.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="icon">🔒</div><p>no groups yet.<br>create one and invite your friends.</p></div>';
+                return;
+            }
+            list.innerHTML = groups.map(g => `
+                <div class="group-card" onclick="openGroup('${g.id}', '${g.name}', '${g.invite_code}')">
+                    <div class="group-name">${g.name}</div>
+                    <div class="group-meta">code: <span>${g.invite_code}</span></div>
+                </div>
+            `).join('');
+            if (!socket) initSocket();
+            groups.forEach(g => socket.emit('join-group', g.id));
+        }
+
+        function showCreate() { showScreen('createScreen'); }
+        function showJoin() { showScreen('joinScreen'); }
+
+        // ── Groups ──
+        function toggleChip(el) { el.classList.toggle('selected'); }
+
+        async function createGroup() {
+            const name = document.getElementById('groupNameInput').value.trim() || 'The Squad';
+            const chips = document.querySelectorAll('#siteChips .chip.selected');
+            const sites = Array.from(chips).map(c => c.dataset.site);
+            if (sites.length === 0) return toast('pick at least one app to track');
+            const res = await fetch(API + '/api/groups', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ name, userId: user.id, sites })
+            });
+            const data = await res.json();
+            toast('group created! share code: ' + data.invite_code);
+            document.getElementById('groupNameInput').value = '';
+            chips.forEach(c => c.classList.remove('selected'));
+            showDash();
+        }
+
+        async function joinGroup() {
+            const code = document.getElementById('inviteCodeInput').value.trim();
+            if (!code) return;
+            const res = await fetch(API + '/api/groups/join', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ code, userId: user.id })
+            });
+            const data = await res.json();
+            if (data.error) return toast('❌ ' + data.error);
+            toast('joined ' + data.name + '! 🔒');
+            document.getElementById('inviteCodeInput').value = '';
+            showDash();
+        }
+
+        // ── Leaderboard ──
+        async function openGroup(id, name, code) {
+            currentGroup = id;
+            document.getElementById('lbGroupName').textContent = name;
+            document.getElementById('lbInviteCode').textContent = code;
+            showScreen('lbScreen');
+            await loadLeaderboard(id);
+        }
+
+        async function loadLeaderboard(groupId) {
+            const res = await fetch(API + '/api/leaderboard/' + groupId);
+            const { members, sites } = await res.json();
+
+            document.getElementById('lbSites').innerHTML = sites.map(s => 
+                `<span class="lb-site">${s}</span>`
+            ).join('');
+
+            // Sort: active streaks first (by duration desc), then busted
+            const now = Date.now();
+            members.sort((a, b) => {
+                const aActive = !a.broken_at;
+                const bActive = !b.broken_at;
+                if (aActive && !bActive) return -1;
+                if (!aActive && bActive) return 1;
+                if (aActive && bActive) {
+                    return new Date(a.started_at) - new Date(b.started_at); // longer streak first
+                }
+                return new Date(b.broken_at) - new Date(a.broken_at);
+            });
+
+            const list = document.getElementById('lbList');
+            list.innerHTML = members.map((m, i) => {
+                const isBusted = !!m.broken_at;
+                const rankClass = !isBusted ? (i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '') : 'dead';
+                const rankText = isBusted ? '💀' : (i + 1);
+                
+                let streakText = '';
+                if (!isBusted) {
+                    const ms = now - new Date(m.started_at).getTime();
+                    const hours = Math.floor(ms / 3600000);
+                    const mins = Math.floor((ms % 3600000) / 60000);
+                    streakText = hours > 0 ? `🔥 ${hours}h ${mins}m streak` : `🔥 ${mins}m streak`;
+                } else {
+                    streakText = 'opened ' + (m.last_violation ? timeSince(m.last_violation) : 'recently');
+                }
+                
+                return `
+                    <div class="lb-item ${isBusted ? 'busted' : ''}">
+                        <span class="lb-rank ${rankClass}">${rankText}</span>
+                        <div class="lb-info">
+                            <div class="lb-name">${m.username}${m.id === user.id ? ' (you)' : ''}</div>
+                            <div class="lb-streak">${streakText}</div>
+                        </div>
+                        ${isBusted ? '<span class="lb-busted">BUSTED</span>' : `<span class="lb-time">${formatStreak(m.started_at)}</span>`}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatStreak(started) {
+            const ms = Date.now() - new Date(started).getTime();
+            const h = Math.floor(ms / 3600000);
+            const m = Math.floor((ms % 3600000) / 60000);
+            if (h > 24) return Math.floor(h/24) + 'd ' + (h%24) + 'h';
+            return h + 'h ' + m + 'm';
+        }
+
+        function timeSince(dateStr) {
+            const ms = Date.now() - new Date(dateStr).getTime();
+            const mins = Math.floor(ms / 60000);
+            if (mins < 60) return mins + 'min ago';
+            const hours = Math.floor(mins / 60);
+            if (hours < 24) return hours + 'h ago';
+            return Math.floor(hours / 24) + 'd ago';
+        }
+
+        function copyCode() {
+            const code = document.getElementById('lbInviteCode').textContent;
+            navigator.clipboard?.writeText(code);
+            toast('copied invite code: ' + code);
+        }
+
+        // ── Toast ──
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+    </script>
+</body>
+</html>

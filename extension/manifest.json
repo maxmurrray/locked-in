@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Locked In – Stay Off Your Phone",
+  "description": "Compete with friends to stay off distracting sites. Get busted if you crack. 🔒",
+  "version": "1.0.0",
+  "permissions": ["tabs", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}

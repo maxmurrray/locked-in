@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 280px; font-family: -apple-system, sans-serif; background: #0a0a0a; color: #f5f5f5; padding: 20px; }
+    h2 { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    h2 span { color: #818cf8; }
+    .status { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .status.active { color: #4ade80; }
+    .tracked { font-size: 12px; color: #666; margin-bottom: 4px; }
+    .site-tag { display: inline-block; background: rgba(99,102,241,0.1); color: #818cf8; padding: 3px 10px; border-radius: 100px; font-size: 11px; margin: 2px; }
+    a { color: #818cf8; text-decoration: none; font-size: 13px; }
+    .footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #1a1a1a; font-size: 11px; color: #444; }
+  </style>
+</head>
+<body>
+  <h2>🔒 Locked <span>In</span></h2>
+  <div class="status" id="status">checking...</div>
+  <div id="sites"></div>
+  <div class="footer">open the app to manage groups</div>
+  <script>
+    chrome.storage.local.get(['lockedin_user', 'lockedin_tracked'], (data) => {
+      const status = document.getElementById('status');
+      const sites = document.getElementById('sites');
+      if (!data.lockedin_user) {
+        status.textContent = 'not logged in — open the app first';
+        return;
+      }
+      status.textContent = '● monitoring ' + (data.lockedin_tracked?.length || 0) + ' sites';
+      status.classList.add('active');
+      if (data.lockedin_tracked) {
+        sites.innerHTML = '<div class="tracked">tracking:</div>' + 
+          data.lockedin_tracked.map(s => '<span class="site-tag">' + s + '</span>').join(' ');
+      }
+    });
+  </script>
+</body>
+</html>
